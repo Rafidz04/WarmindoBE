@@ -1,0 +1,47 @@
+{
+  "name": "jti-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/bina-area-persada/jti-backendnodejs.git"
+  },
+  "author": "Tatag",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/bina-area-persada/jti-backendnodejs/issues"
+  },
+  "homepage": "https://gitlab.com/bina-area-persada/jti-backendnodejs#readme",
+  "dependencies": {
+    "axios": "^0.21.4",
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "busboy": "^0.3.1",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.0.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-blacklist": "^1.0.3",
+    "express-defend": "^1.0.9",
+    "express-mongo-sanitize": "^2.1.0",
+    "helmet": "^4.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "jspdf": "^2.5.0",
+    "jspdf-autotable": "^3.5.23",
+    "jszip": "^3.7.1",
+    "moment": "^2.29.1",
+    "mongoose": "^5.12.7",
+    "multer": "^1.4.3",
+    "nodemon": "^2.0.7",
+    "path": "^0.12.7",
+    "pdfkit": "^0.13.0",
+    "pdfkit-table": "^0.1.74",
+    "qrcode": "^1.4.4",
+    "xlsx": "^0.17.3"
+  }
+}

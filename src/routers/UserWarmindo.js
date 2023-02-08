@@ -5,5 +5,6 @@ const { jwtAuthenticate } = require('../middlewares/auth');
 Router.post('/daftarUserWarmindo', UserWarmindoController.daftarUserWarmindo);
 Router.get('/getallUserWarmindo', jwtAuthenticate, UserWarmindoController.getUserWarmindo)
 Router.post('/loginWarmindo', UserWarmindoController.loginWarmindo)
+Router.get('/refresh', jwtAuthenticate, UserWarmindoController.refresh);
 
 module.exports = Router;

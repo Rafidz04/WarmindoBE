@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(helmet.hidePoweredBy({ setTo: "PHP 7.4.11" }));
 
-app.use("/warmindofoto", express.static("./imageLaporan"));
+app.use("/warmindofoto", express.static("./fotoProduk"));
 
 app.use("/", router);
 

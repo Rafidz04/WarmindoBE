@@ -10,10 +10,17 @@ const stokSchema = new mongoose.Schema(
       type: Number,
       required: [true, "Harga harus di isi!"],
     },
+    totalStock:{
+      type: Number,
+      required: [true, "Total stock harus di isi!"],
+    },
     kategori: {
       type: String,
       required: [true, "Kategori barang harus di isi!"],
     },
+    fotoProduk:{
+      type: String
+    }
   },
   {
     versionKey: false,

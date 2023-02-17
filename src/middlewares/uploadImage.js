@@ -9,9 +9,9 @@ var storage = multer.diskStorage({
 
     if (!req.body.foto) {
       req.body.foto = [];
-      req.body.foto.push("http://localhost:9030/warmindofoto/" + filename);
+      req.body.foto.push("https://uptight-bee-woolens.cyclic.app/warmindofoto/" + filename);
     } else {
-      req.body.foto.push("http://localhost:9030/warmindofoto/" + filename);
+      req.body.foto.push("https://uptight-bee-woolens.cyclic.app/warmindofoto/" + filename);
     }
     // req.body.foto = 'https://apijti.ptbap.net/jtifoto//' + filename;
 

@@ -8,7 +8,7 @@ var storage = multer.diskStorage({
     let filename = "warmindo88-" + Date.now() + ".jpg";
 
     if (!req.body.foto) {
-      req.body.foto = "http://192.168.1.11:9030/warmindofoto/" + filename
+      req.body.foto = "https://uptight-bee-woolens.cyclic.app/warmindofoto/" + filename
      
     } 
 

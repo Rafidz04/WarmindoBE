@@ -836,7 +836,6 @@ class Controller {
 
   static setJumlahKaryawanMasuk(req, res, next) {
     let { tgl, jumlah } = req.body;
-    // console.log(tgl, jumlah);
     Axios.post(
       `https://backoffice.bapguard.com/api/seting_karyawan`,
       // `http://192.168.100.24/bap/public/api/seting_karyawan`,

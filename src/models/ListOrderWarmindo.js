@@ -1,18 +1,26 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema(
   {
     idOrder: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'OrderWarmin',
+      ref: "OrderWarmin",
     },
-    idStock: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'StockWarmindo',
+    // idStock: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "StockWarmindo",
+    // },
+    namaBarang:{
+      type: String,
+      require: [true, "Nama barang wajib diisi"],
     },
-    kategori:{
-type:String,
-require:[true,"Kategori wajib diisi"]
+    hargaBarang:{
+      type: Number,
+      require: [true, "Harga barang wajib diisi"],
+    },
+    kategori: {
+      type: String,
+      require: [true, "Kategori wajib diisi"],
     },
     kuantitas: {
       type: Number,
@@ -25,9 +33,9 @@ require:[true,"Kategori wajib diisi"]
   },
   {
     versionKey: false,
-    timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+    timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },
   }
 );
 
-const schemaVar = mongoose.model('ListOrderWarmindo', schema);
+const schemaVar = mongoose.model("ListOrderWarmindo", schema);
 module.exports = schemaVar;

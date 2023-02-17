@@ -5,5 +5,7 @@ const { jwtAuthenticate } = require('../middlewares/auth');
 Router.post('/addorderWarmindo', OrderWarmindoController.addOrderWarmindo);
 Router.get('/getallorderWarmindo', jwtAuthenticate, OrderWarmindoController.getOrderWarmindo)
 Router.delete("/deleteorderwarmindo", jwtAuthenticate, OrderWarmindoController.deleteOrderWarmindo);
+Router.get("/getAllPendapatanWarmindo",jwtAuthenticate, OrderWarmindoController.getAllOrderWarmindo)
+Router.get("/getGrafikPenghasilan",jwtAuthenticate,OrderWarmindoController.getGrafikPenghasilanWarmindo)
 
 module.exports = Router;

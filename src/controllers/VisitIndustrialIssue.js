@@ -178,7 +178,6 @@ class Controller {
 
   static deletedVisitIsue(req, res, next) {
     let { visitId } = req.body;
-    console.log(visitId);
     VisitIndustrialIssue.findByIdAndDelete(visitId.visitId)
       .then((respon) => {
         res.status(200).json(respon);

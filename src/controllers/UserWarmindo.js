@@ -4,6 +4,7 @@ const { generateTokenWOExp, generateTokenWithExp } = require("../helpers/jwt");
 const { checkPass } = require("../helpers/hashPass");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+const { hashPass } = require("../helpers/hashPass");
 
 class Controller {
   static daftarUserWarmindo(req, res, next) {
@@ -62,7 +63,6 @@ class Controller {
               role:response.role,
               token: tokenHashed,
             });
-            console.log(response)
           } catch (err) {
             console.log(err);
           }
@@ -76,7 +76,6 @@ class Controller {
   static refresh(req, res, next) {
     UserWarmindo.findOne({ nama: req.decoded.nama })
       .then(async (response) => {
-        console.log(response,"INI RESPONREFRESH")
         if (response) {
           try {
             let token = {
@@ -97,6 +96,19 @@ class Controller {
         } else {
           throw { status: 403, message: "Kredensial bermasalah" };
         }
+      })
+      .catch(next);
+  }
+
+  static editUserWarmindo(req, res, next) {
+    let { idUser, password } = req.body;
+    let newPass = hashPass(password);
+    UserWarmindo.findByIdAndUpdate(idUser,{
+      password:newPass
+    })
+   
+      .then((response) => {
+        res.status(200).json({ message: "Password berhasil diubah" });
       })
       .catch(next);
   }

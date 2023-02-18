@@ -21,7 +21,6 @@ class Controller {
   }
   static getStokWarmindo(req, res, next) {
     let kategori = req.query;
-    console.log(!kategori.kategori);
     if (!kategori.kategori) {
       StokWarmindo.find({})
         .then((response) => {
@@ -39,8 +38,6 @@ class Controller {
 
   static editStokWarmindo(req, res, next) {
     let { idStock, totalStock, harga } = req.body;
-    console.log(">>>>>>>")
-    console.log(idStock)
 
     StokWarmindo.findByIdAndUpdate(idStock, {
       totalStock: totalStock,
@@ -62,7 +59,6 @@ class Controller {
     } else {
       StokWarmindo.findOne({ _id })
         .then((response) => {
-          console.log(response,">>>>>>>>>")
          return StokWarmindo.deleteOne({ "_id" : ObjectId(_id) });
         })
         .then((response) => {

@@ -7,5 +7,6 @@ Router.get('/getallUserWarmindo', jwtAuthenticate, UserWarmindoController.getUse
 Router.post('/loginWarmindo', UserWarmindoController.loginWarmindo)
 Router.get('/refresh', jwtAuthenticate, UserWarmindoController.refresh);
 Router.delete('/deleteUserWarmindo',jwtAuthenticate,UserWarmindoController.deleteUserWarmindo)
+Router.patch('/updatePassword',jwtAuthenticate,UserWarmindoController.editUserWarmindo)
 
 module.exports = Router;

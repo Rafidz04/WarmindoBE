@@ -7,7 +7,6 @@ const moment = require("moment");
 class Controller {
   static addOrderWarmindo(req, res, next) {
     let orderArr = JSON.parse(req.body.orderArr);
-    console.log(orderArr)
     let { namaPelanggan } = req.body;
     OrderWarmindo.create({ namaPelanggan: namaPelanggan })
       .then((response) => {

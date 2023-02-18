@@ -2,6 +2,7 @@ const Axios = require("axios");
 const OrderWarmindo = require("../models/OrderWarmindo");
 const ListOrderWarmindo = require("../models/ListOrderWarmindo");
 const StockWarmindo = require("../models/StokWarmindo");
+const moment = require("moment");
 
 class Controller {
   static addOrderWarmindo(req, res, next) {
@@ -148,6 +149,44 @@ class Controller {
         let tmpAllMonth = [jan,feb,mar,apr,mei,jun,jul,ags,spt,okt,nov,des];
         
         res.status(200).json({ status: 200, data: tmpAllMonth });
+      })
+      .catch(next);
+  }
+
+  static getHistoryOrderHariIni(req, res, next) {
+    let { date } = req.query;
+    let fromDate = new Date(Number(date));
+    fromDate.setHours(0, 0, 0, 0);
+    let toDate = new Date(Number(date));
+    toDate.setHours(23, 59, 59, 59);
+    OrderWarmindo.aggregate([
+      { $match: {
+        createdAt:{$gte: fromDate, $lt: toDate}
+      } },
+      {
+        $lookup: {
+          from: "listorderwarmindos",
+          let: {
+            idOrder: "$_id",
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [{ $eq: ["$idOrder", "$$idOrder"] }],
+                },
+              },
+            },
+          ],
+          as: "items",
+        },
+      },
+      {
+        $sort: { createdAt: -1 },
+      },
+    ])
+      .then((respon) => {
+        res.status(200).json({ status: 200, data: respon });
       })
       .catch(next);
   }

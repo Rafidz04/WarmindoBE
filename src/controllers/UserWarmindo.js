@@ -53,13 +53,16 @@ class Controller {
             let token = {
               email: response.email,
               nama: response.nama,
+              role:response.role
             };
             let tokenHashed = await generateTokenWithExp(token);
             res.status(200).json({
               email: response.email,
               nama: response.nama,
+              role:response.role,
               token: tokenHashed,
             });
+            console.log(response)
           } catch (err) {
             console.log(err);
           }
@@ -73,16 +76,19 @@ class Controller {
   static refresh(req, res, next) {
     UserWarmindo.findOne({ nama: req.decoded.nama })
       .then(async (response) => {
+        console.log(response,"INI RESPONREFRESH")
         if (response) {
           try {
             let token = {
               email: response.email,
               nama: response.nama,
+              role:response.role
             };
             let tokenHashed = await generateTokenWithExp(token);
             res.status(200).json({
               email: response.email,
               nama: response.nama,
+              role:response.role,
               token: tokenHashed,
             });
           } catch (err) {

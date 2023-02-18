@@ -7,5 +7,6 @@ Router.get('/getallorderWarmindo', jwtAuthenticate, OrderWarmindoController.getO
 Router.delete("/deleteorderwarmindo", jwtAuthenticate, OrderWarmindoController.deleteOrderWarmindo);
 Router.get("/getAllPendapatanWarmindo",jwtAuthenticate, OrderWarmindoController.getAllOrderWarmindo)
 Router.get("/getGrafikPenghasilan",jwtAuthenticate,OrderWarmindoController.getGrafikPenghasilanWarmindo)
+Router.get("/getHistoryOrderHariIni",jwtAuthenticate,OrderWarmindoController.getHistoryOrderHariIni)
 
 module.exports = Router;

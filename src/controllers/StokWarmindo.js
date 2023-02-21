@@ -5,15 +5,29 @@ const ObjectId = mongoose.Types.ObjectId;
 
 class Controller {
   static daftarStokWarmindo(req, res, next) {
-    let { namaBarang, harga, kategori, totalStock } = req.body;
+    let { kodeBarang, namaBarang, harga, kategori, totalStock, minimStock } =
+      req.body;
 
-    StokWarmindo.create({
-      namaBarang,
-      harga,
-      kategori,
-      totalStock,
-      fotoProduk: req.body.foto,
-    })
+    StokWarmindo.find({ kodeBarang: kodeBarang })
+      .then((respon) => {
+        if (respon.length === 0) {
+          return StokWarmindo.create({
+            kodeBarang,
+            namaBarang,
+            harga,
+            minimStock,
+            kategori,
+            totalStock,
+            fotoProduk: req.body.foto,
+          });
+        } else {
+          return StokWarmindo.updateOne(
+            { kodeBarang: kodeBarang },
+            { $inc: { totalStock: +totalStock } }
+          );
+        }
+      })
+
       .then((response) => {
         res.status(200).json({ message: "Stok berhasil didaftarkan" });
       })
@@ -23,8 +37,30 @@ class Controller {
     let kategori = req.query;
     if (!kategori.kategori) {
       StokWarmindo.find({})
+        .sort({ kodeBarang: 1 })
         .then((response) => {
-          res.status(200).json({ data: response });
+          let makanan = [];
+          let minuman = [];
+          let toping = [];
+          response.map((val) => {
+            if (val.kategori === "makanan") {
+              makanan.push(val);
+            } else if (val.kategori === "minuman") {
+              minuman.push(val);
+            } else {
+              toping.push(val);
+            }
+          });
+
+          let listMakananTerakhir = makanan[makanan.length - 1];
+          let listMinumanTerakhir = minuman[minuman.length - 1];
+          let listTopingTerakhir = toping[toping.length - 1];
+          res.status(200).json({
+            data: response,
+            listMakananAkhir: listMakananTerakhir,
+            listMinumanAkhir: listMinumanTerakhir,
+            listTopingAkhir: listTopingTerakhir,
+          });
         })
         .catch(next);
     } else {
@@ -37,11 +73,13 @@ class Controller {
   }
 
   static editStokWarmindo(req, res, next) {
-    let { idStock, totalStock, harga } = req.body;
+    let { idStock, totalStock, harga, status, minimStock } = req.body;
 
     StokWarmindo.findByIdAndUpdate(idStock, {
       totalStock: totalStock,
       harga: harga,
+      status: status,
+      minimStock: minimStock,
     })
       .then((respon) => {
         res.status(200).json({ message: "Berhasil update stock!" });
@@ -49,9 +87,8 @@ class Controller {
       .catch(next);
   }
   static deleteStokWarmindo(req, res, next) {
-    
     let { _id } = req.body;
-    
+
     if (_id == "") {
       throw {
         message: "Maaf ID tidak boleh kosong",
@@ -59,7 +96,7 @@ class Controller {
     } else {
       StokWarmindo.findOne({ _id })
         .then((response) => {
-         return StokWarmindo.deleteOne({ "_id" : ObjectId(_id) });
+          return StokWarmindo.deleteOne({ _id: ObjectId(_id) });
         })
         .then((response) => {
           res.status(200).json({

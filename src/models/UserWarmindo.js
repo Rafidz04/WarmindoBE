@@ -7,13 +7,17 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Username harus di isi!"],
     },
-    nama:{
-        type: String,
-        required: [true, "Nama user harus di isi!"],
+    nama: {
+      type: String,
+      required: [true, "Nama user harus di isi!"],
     },
     password: {
       type: String,
       required: [true, "Password harus di isi!"],
+    },
+    status: {
+      type: String,
+      default: "Aktif",
     },
     role: {
       type: Number,

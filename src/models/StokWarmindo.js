@@ -2,15 +2,21 @@ const mongoose = require("mongoose");
 
 const stokSchema = new mongoose.Schema(
   {
-    namaBarang:{
-        type: String,
-        required: [true, "Nama barang harus di isi!"],
+    kodeBarang: {
+      type: String,
+    },
+    namaBarang: {
+      type: String,
+      required: [true, "Nama barang harus di isi!"],
     },
     harga: {
       type: Number,
       required: [true, "Harga harus di isi!"],
     },
-    totalStock:{
+    minimStock: {
+      type: Number,
+    },
+    totalStock: {
       type: Number,
       required: [true, "Total stock harus di isi!"],
     },
@@ -18,16 +24,19 @@ const stokSchema = new mongoose.Schema(
       type: String,
       required: [true, "Kategori barang harus di isi!"],
     },
-    fotoProduk:{
-      type: String
-    }
+    fotoProduk: {
+      type: String,
+    },
+    status: {
+      type: String,
+      default: "aktif",
+    },
   },
   {
     versionKey: false,
     timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },
   }
 );
-
 
 const stokWarmindo = mongoose.model("StokWarmindo", stokSchema);
 module.exports = stokWarmindo;

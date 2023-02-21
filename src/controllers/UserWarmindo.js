@@ -17,9 +17,8 @@ class Controller {
       .catch(next);
   }
   static deleteUserWarmindo(req, res, next) {
-    
     let { _id } = req.body;
-    
+
     if (_id == "") {
       throw {
         message: "Maaf ID tidak boleh kosong",
@@ -27,7 +26,7 @@ class Controller {
     } else {
       UserWarmindo.findOne({ _id })
         .then((response) => {
-         return UserWarmindo.deleteOne({ "_id" : ObjectId(_id) });
+          return UserWarmindo.deleteOne({ _id: ObjectId(_id) });
         })
         .then((response) => {
           res.status(200).json({
@@ -49,25 +48,30 @@ class Controller {
     let { email, password } = req.body;
     UserWarmindo.findOne({ email })
       .then(async (response) => {
-        if (response && checkPass(password, response.password)) {
-          try {
-            let token = {
-              email: response.email,
-              nama: response.nama,
-              role:response.role
-            };
-            let tokenHashed = await generateTokenWithExp(token);
-            res.status(200).json({
-              email: response.email,
-              nama: response.nama,
-              role:response.role,
-              token: tokenHashed,
-            });
-          } catch (err) {
-            console.log(err);
+        console.log(response);
+        if (response.status === "aktif") {
+          if (response && checkPass(password, response.password)) {
+            try {
+              let token = {
+                email: response.email,
+                nama: response.nama,
+                role: response.role,
+              };
+              let tokenHashed = await generateTokenWithExp(token);
+              res.status(200).json({
+                email: response.email,
+                nama: response.nama,
+                role: response.role,
+                token: tokenHashed,
+              });
+            } catch (err) {
+              console.log(err);
+            }
+          } else {
+            throw { status: 400, message: "email atau password anda salah!" };
           }
         } else {
-          throw { status: 400, message: "email atau password anda salah!" };
+          throw { status: 400, message: "maaf status anda tidak aktif!" };
         }
       })
       .catch(next);
@@ -81,13 +85,13 @@ class Controller {
             let token = {
               email: response.email,
               nama: response.nama,
-              role:response.role
+              role: response.role,
             };
             let tokenHashed = await generateTokenWithExp(token);
             res.status(200).json({
               email: response.email,
               nama: response.nama,
-              role:response.role,
+              role: response.role,
               token: tokenHashed,
             });
           } catch (err) {
@@ -103,12 +107,23 @@ class Controller {
   static editUserWarmindo(req, res, next) {
     let { idUser, password } = req.body;
     let newPass = hashPass(password);
-    UserWarmindo.findByIdAndUpdate(idUser,{
-      password:newPass
+    UserWarmindo.findByIdAndUpdate(idUser, {
+      password: newPass,
     })
-   
       .then((response) => {
         res.status(200).json({ message: "Password berhasil diubah" });
+      })
+      .catch(next);
+  }
+
+  static editStatusUser(req, res, next) {
+    let { idUser, status } = req.body;
+    UserWarmindo.findByIdAndUpdate(idUser, {
+      status: status,
+    })
+
+      .then((response) => {
+        res.status(200).json({ message: "Status berhasil diubah" });
       })
       .catch(next);
   }

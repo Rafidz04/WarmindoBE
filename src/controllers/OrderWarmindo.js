@@ -6,9 +6,11 @@ const moment = require("moment");
 
 class Controller {
   static addOrderWarmindo(req, res, next) {
+    let namaKasir = req.decoded.nama;
     let orderArr = JSON.parse(req.body.orderArr);
     let { namaPelanggan } = req.body;
-    OrderWarmindo.create({ namaPelanggan: namaPelanggan })
+
+    OrderWarmindo.create({ namaPelanggan: namaPelanggan, namaKasir: namaKasir })
       .then((response) => {
         orderArr.map((val) => {
           return StockWarmindo.updateOne(
@@ -100,56 +102,79 @@ class Controller {
   }
 
   static getGrafikPenghasilanWarmindo(req, res, next) {
-    ListOrderWarmindo.find({})
-      .then((respon) => {
-        let jan = 0;
-        let feb = 0;
-        let mar = 0;
-        let apr = 0;
-        let mei = 0;
-        let jun = 0;
-        let jul = 0;
-        let ags = 0;
-        let spt = 0;
-        let okt = 0;
-        let nov = 0;
-        let des = 0;
-        
+    let { dari, sampai } = req.query;
 
-        respon.map((val) => {
-          let bulan = new Date(val.createdAt).getMonth()
-          if(bulan+1===1){
-            jan+=val.totalKuantitas
-          }else if(bulan+1===2){
-            feb+=val.totalKuantitas
-          }else if(bulan+1===3){
-            mar+=val.totalKuantitas
-          }else if(bulan+1===4){
-            apr+=val.totalKuantitas
-          }else if(bulan+1===5){
-            mei+=val.totalKuantitas
-          }else if(bulan+1===6){
-            jun+=val.totalKuantitas
-          }else if(bulan+1===7){
-            jul+=val.totalKuantitas
-          }else if(bulan+1===8){
-            ags+=val.totalKuantitas
-          }else if(bulan+1===9){
-            spt+=val.totalKuantitas
-          }else if(bulan+1===10){
-            okt+=val.totalKuantitas
-          }else if(bulan+1===11){
-            nov+=val.totalKuantitas
-          }else if(bulan+1===12){
-            des+=val.totalKuantitas
-          }
-        });
+    let tglMulai = new Date(Number(dari));
+    let tglSelesai = new Date(Number(sampai));
 
-        let tmpAllMonth = [jan,feb,mar,apr,mei,jun,jul,ags,spt,okt,nov,des];
-        
-        res.status(200).json({ status: 200, data: tmpAllMonth });
-      })
-      .catch(next);
+    ListOrderWarmindo.find({
+      $and: [
+        { createdAt: { $lt: tglSelesai } },
+        { createdAt: { $gt: tglMulai } },
+      ],
+    });
+    // ListOrderWarmindo.find({})
+    //   .then((respon) => {
+    //     let jan = 0;
+    //     let feb = 0;
+    //     let mar = 0;
+    //     let apr = 0;
+    //     let mei = 0;
+    //     let jun = 0;
+    //     let jul = 0;
+    //     let ags = 0;
+    //     let spt = 0;
+    //     let okt = 0;
+    //     let nov = 0;
+    //     let des = 0;
+
+    //     respon.map((val) => {
+    //       let bulan = new Date(val.createdAt).getMonth();
+    //       if (bulan + 1 === 1) {
+    //         jan += val.totalKuantitas;
+    //       } else if (bulan + 1 === 2) {
+    //         feb += val.totalKuantitas;
+    //       } else if (bulan + 1 === 3) {
+    //         mar += val.totalKuantitas;
+    //       } else if (bulan + 1 === 4) {
+    //         apr += val.totalKuantitas;
+    //       } else if (bulan + 1 === 5) {
+    //         mei += val.totalKuantitas;
+    //       } else if (bulan + 1 === 6) {
+    //         jun += val.totalKuantitas;
+    //       } else if (bulan + 1 === 7) {
+    //         jul += val.totalKuantitas;
+    //       } else if (bulan + 1 === 8) {
+    //         ags += val.totalKuantitas;
+    //       } else if (bulan + 1 === 9) {
+    //         spt += val.totalKuantitas;
+    //       } else if (bulan + 1 === 10) {
+    //         okt += val.totalKuantitas;
+    //       } else if (bulan + 1 === 11) {
+    //         nov += val.totalKuantitas;
+    //       } else if (bulan + 1 === 12) {
+    //         des += val.totalKuantitas;
+    //       }
+    //     });
+
+    //     let tmpAllMonth = [
+    //       jan,
+    //       feb,
+    //       mar,
+    //       apr,
+    //       mei,
+    //       jun,
+    //       jul,
+    //       ags,
+    //       spt,
+    //       okt,
+    //       nov,
+    //       des,
+    //     ];
+
+    //     res.status(200).json({ status: 200, data: tmpAllMonth });
+    //   })
+    //   .catch(next);
   }
 
   static getHistoryOrderHariIni(req, res, next) {
@@ -159,9 +184,11 @@ class Controller {
     let toDate = new Date(Number(date));
     toDate.setHours(23, 59, 59, 59);
     OrderWarmindo.aggregate([
-      { $match: {
-        createdAt:{$gte: fromDate, $lt: toDate}
-      } },
+      {
+        $match: {
+          createdAt: { $gte: fromDate, $lt: toDate },
+        },
+      },
       {
         $lookup: {
           from: "listorderwarmindos",

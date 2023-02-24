@@ -48,30 +48,33 @@ class Controller {
     let { email, password } = req.body;
     UserWarmindo.findOne({ email })
       .then(async (response) => {
-        console.log(response);
-        if (response.status === "aktif") {
-          if (response && checkPass(password, response.password)) {
-            try {
-              let token = {
-                email: response.email,
-                nama: response.nama,
-                role: response.role,
-              };
-              let tokenHashed = await generateTokenWithExp(token);
-              res.status(200).json({
-                email: response.email,
-                nama: response.nama,
-                role: response.role,
-                token: tokenHashed,
-              });
-            } catch (err) {
-              console.log(err);
+        if (!response) {
+          throw { status: 400, message: "Maaf akun anda tidak terdaftar!" };
+        } else {
+          if (response.status === "aktif") {
+            if (response && checkPass(password, response.password)) {
+              try {
+                let token = {
+                  email: response.email,
+                  nama: response.nama,
+                  role: response.role,
+                };
+                let tokenHashed = await generateTokenWithExp(token);
+                res.status(200).json({
+                  email: response.email,
+                  nama: response.nama,
+                  role: response.role,
+                  token: tokenHashed,
+                });
+              } catch (err) {
+                console.log(err);
+              }
+            } else {
+              throw { status: 400, message: "Email atau Password anda salah!" };
             }
           } else {
-            throw { status: 400, message: "email atau password anda salah!" };
+            throw { status: 400, message: "Maaf status anda tidak aktif!" };
           }
-        } else {
-          throw { status: 400, message: "maaf status anda tidak aktif!" };
         }
       })
       .catch(next);

@@ -8,9 +8,8 @@ var storage = multer.diskStorage({
     let filename = "warmindo88-" + Date.now() + ".jpg";
 
     if (!req.body.foto) {
-      req.body.foto = "http://18.142.241.43/warmindofoto/" + filename
-     
-    } 
+      req.body.foto = "https://warmindobe.my.id/warmindofoto/" + filename;
+    }
 
     cb(null, filename);
   },

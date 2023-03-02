@@ -107,6 +107,20 @@ class Controller {
         .catch(next);
     }
   }
+
+  static getHarusOrder(req, res, next) {
+    StokWarmindo.find({})
+      .then((response) => {
+        let tmp = [];
+        response.map((val) => {
+          if (val.totalStock <= val.minimStock) {
+            tmp.push(val);
+          }
+        });
+        res.status(200).json(tmp);
+      })
+      .catch(next);
+  }
 }
 
 module.exports = Controller;

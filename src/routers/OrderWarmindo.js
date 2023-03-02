@@ -33,4 +33,10 @@ Router.get(
   OrderWarmindoController.getHistoryOrderHariIni
 );
 
+Router.get(
+  "/getGrafikPelanggan",
+  jwtAuthenticate,
+  OrderWarmindoController.getGrafikPelanggan
+);
+
 module.exports = Router;

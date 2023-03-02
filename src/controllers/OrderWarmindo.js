@@ -102,79 +102,185 @@ class Controller {
   }
 
   static getGrafikPenghasilanWarmindo(req, res, next) {
-    let { dari, sampai } = req.query;
+    let year = req.query;
 
-    let tglMulai = new Date(Number(dari));
-    let tglSelesai = new Date(Number(sampai));
+    var firstdate = new Date(year.year, 0, 1).getTime();
+    var lastdate = new Date(year.year, 11, 31).getTime();
+
+    let tglMulai = new Date(Number(firstdate));
+    let tglSelesai = new Date(Number(lastdate));
 
     ListOrderWarmindo.find({
       $and: [
         { createdAt: { $lt: tglSelesai } },
         { createdAt: { $gt: tglMulai } },
       ],
-    });
-    // ListOrderWarmindo.find({})
-    //   .then((respon) => {
-    //     let jan = 0;
-    //     let feb = 0;
-    //     let mar = 0;
-    //     let apr = 0;
-    //     let mei = 0;
-    //     let jun = 0;
-    //     let jul = 0;
-    //     let ags = 0;
-    //     let spt = 0;
-    //     let okt = 0;
-    //     let nov = 0;
-    //     let des = 0;
+    })
+      .then((response) => {
+        let jan = 0;
+        let feb = 0;
+        let mar = 0;
+        let apr = 0;
+        let mei = 0;
+        let jun = 0;
+        let jul = 0;
+        let ags = 0;
+        let spt = 0;
+        let okt = 0;
+        let nov = 0;
+        let des = 0;
+        let total = 0;
 
-    //     respon.map((val) => {
-    //       let bulan = new Date(val.createdAt).getMonth();
-    //       if (bulan + 1 === 1) {
-    //         jan += val.totalKuantitas;
-    //       } else if (bulan + 1 === 2) {
-    //         feb += val.totalKuantitas;
-    //       } else if (bulan + 1 === 3) {
-    //         mar += val.totalKuantitas;
-    //       } else if (bulan + 1 === 4) {
-    //         apr += val.totalKuantitas;
-    //       } else if (bulan + 1 === 5) {
-    //         mei += val.totalKuantitas;
-    //       } else if (bulan + 1 === 6) {
-    //         jun += val.totalKuantitas;
-    //       } else if (bulan + 1 === 7) {
-    //         jul += val.totalKuantitas;
-    //       } else if (bulan + 1 === 8) {
-    //         ags += val.totalKuantitas;
-    //       } else if (bulan + 1 === 9) {
-    //         spt += val.totalKuantitas;
-    //       } else if (bulan + 1 === 10) {
-    //         okt += val.totalKuantitas;
-    //       } else if (bulan + 1 === 11) {
-    //         nov += val.totalKuantitas;
-    //       } else if (bulan + 1 === 12) {
-    //         des += val.totalKuantitas;
-    //       }
-    //     });
+        response.map((val) => {
+          let bulan = new Date(val.createdAt).getMonth();
+          if (bulan + 1 === 1) {
+            jan += val.totalKuantitas;
+            total += val.totalKuantitas;
+          } else if (bulan + 1 === 2) {
+            feb += val.totalKuantitas;
+            total += val.totalKuantitas;
+          } else if (bulan + 1 === 3) {
+            mar += val.totalKuantitas;
+            total += val.totalKuantitas;
+          } else if (bulan + 1 === 4) {
+            apr += val.totalKuantitas;
+            total += val.totalKuantitas;
+          } else if (bulan + 1 === 5) {
+            mei += val.totalKuantitas;
+            total += val.totalKuantitas;
+          } else if (bulan + 1 === 6) {
+            jun += val.totalKuantitas;
+            total += val.totalKuantitas;
+          } else if (bulan + 1 === 7) {
+            jul += val.totalKuantitas;
+            total += val.totalKuantitas;
+          } else if (bulan + 1 === 8) {
+            ags += val.totalKuantitas;
+            total += val.totalKuantitas;
+          } else if (bulan + 1 === 9) {
+            spt += val.totalKuantitas;
+            total += val.totalKuantitas;
+          } else if (bulan + 1 === 10) {
+            okt += val.totalKuantitas;
+            total += val.totalKuantitas;
+          } else if (bulan + 1 === 11) {
+            nov += val.totalKuantitas;
+            total += val.totalKuantitas;
+          } else if (bulan + 1 === 12) {
+            des += val.totalKuantitas;
+            total += val.totalKuantitas;
+          }
+        });
 
-    //     let tmpAllMonth = [
-    //       jan,
-    //       feb,
-    //       mar,
-    //       apr,
-    //       mei,
-    //       jun,
-    //       jul,
-    //       ags,
-    //       spt,
-    //       okt,
-    //       nov,
-    //       des,
-    //     ];
+        let tmpAllMonth = [
+          jan,
+          feb,
+          mar,
+          apr,
+          mei,
+          jun,
+          jul,
+          ags,
+          spt,
+          okt,
+          nov,
+          des,
+        ];
 
-    //     res.status(200).json({ status: 200, data: tmpAllMonth });
-    //   })
-    //   .catch(next);
+        res.status(200).json({ status: 200, data: tmpAllMonth, total: total });
+      })
+      .catch(next);
+  }
+
+  static getGrafikPelanggan(req, res, next) {
+    let year = req.query;
+
+    var firstdate = new Date(year.year, 0, 1).getTime();
+    var lastdate = new Date(year.year, 11, 31).getTime();
+
+    let tglMulai = new Date(Number(firstdate));
+    let tglSelesai = new Date(Number(lastdate));
+
+    OrderWarmindo.find({
+      $and: [
+        { createdAt: { $lt: tglSelesai } },
+        { createdAt: { $gt: tglMulai } },
+      ],
+    })
+      .then((response) => {
+        let jan = 0;
+        let feb = 0;
+        let mar = 0;
+        let apr = 0;
+        let mei = 0;
+        let jun = 0;
+        let jul = 0;
+        let ags = 0;
+        let spt = 0;
+        let okt = 0;
+        let nov = 0;
+        let des = 0;
+        let total = 0;
+
+        response.map((val) => {
+          let bulan = new Date(val.createdAt).getMonth();
+          if (bulan + 1 === 1) {
+            jan++;
+            total++;
+          } else if (bulan + 1 === 2) {
+            feb++;
+            total++;
+          } else if (bulan + 1 === 3) {
+            mar++;
+            total++;
+          } else if (bulan + 1 === 4) {
+            apr++;
+            total++;
+          } else if (bulan + 1 === 5) {
+            mei++;
+            total++;
+          } else if (bulan + 1 === 6) {
+            jun++;
+            total++;
+          } else if (bulan + 1 === 7) {
+            jul++;
+            total++;
+          } else if (bulan + 1 === 8) {
+            ags++;
+            total++;
+          } else if (bulan + 1 === 9) {
+            spt++;
+            total++;
+          } else if (bulan + 1 === 10) {
+            okt++;
+            total++;
+          } else if (bulan + 1 === 11) {
+            nov++;
+            total++;
+          } else if (bulan + 1 === 12) {
+            des++;
+            total++;
+          }
+        });
+
+        let tmpAllMonth = [
+          jan,
+          feb,
+          mar,
+          apr,
+          mei,
+          jun,
+          jul,
+          ags,
+          spt,
+          okt,
+          nov,
+          des,
+        ];
+
+        res.status(200).json({ status: 200, data: tmpAllMonth, total: total });
+      })
+      .catch(next);
   }
 
   static getHistoryOrderHariIni(req, res, next) {

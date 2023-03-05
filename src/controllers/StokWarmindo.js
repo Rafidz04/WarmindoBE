@@ -65,11 +65,19 @@ class Controller {
         })
         .catch(next);
     } else {
-      StokWarmindo.find({ kategori: kategori.kategori })
-        .then((response) => {
-          res.status(200).json({ data: response });
-        })
-        .catch(next);
+      if (kategori === "makanan") {
+        StokWarmindo.find({ kategori: { $in: ["makanan", "toping"] } })
+          .then((response) => {
+            res.status(200).json({ data: response });
+          })
+          .catch(next);
+      } else {
+        StokWarmindo.find({ kategori: kategori.kategori })
+          .then((response) => {
+            res.status(200).json({ data: response });
+          })
+          .catch(next);
+      }
     }
   }
 

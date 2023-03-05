@@ -41,25 +41,26 @@ class Controller {
         .then((response) => {
           let makanan = [];
           let minuman = [];
-          let toping = [];
+          // let toping = [];
           response.map((val) => {
-            if (val.kategori === "makanan") {
+            if (val.kategori === "makanan" || val.kategori === "toping") {
               makanan.push(val);
             } else if (val.kategori === "minuman") {
               minuman.push(val);
-            } else {
-              toping.push(val);
             }
+            //  else {
+            //   toping.push(val);
+            // }
           });
 
           let listMakananTerakhir = makanan[makanan.length - 1];
           let listMinumanTerakhir = minuman[minuman.length - 1];
-          let listTopingTerakhir = toping[toping.length - 1];
+          // let listTopingTerakhir = toping[toping.length - 1];
           res.status(200).json({
             data: response,
             listMakananAkhir: listMakananTerakhir,
             listMinumanAkhir: listMinumanTerakhir,
-            listTopingAkhir: listTopingTerakhir,
+            // listTopingAkhir: listTopingTerakhir,
           });
         })
         .catch(next);

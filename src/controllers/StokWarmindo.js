@@ -65,10 +65,11 @@ class Controller {
         })
         .catch(next);
     } else {
-      if (kategori === "makanan") {
+      console.log(kategori);
+      if (kategori.kategori === "makanan") {
         StokWarmindo.find({ kategori: { $in: ["makanan", "toping"] } })
           .then((response) => {
-            res.status(200).json({ data: response });
+            res.status(200).json({ data: response, total: response.length });
           })
           .catch(next);
       } else {

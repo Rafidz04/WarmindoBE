@@ -67,13 +67,16 @@ class Controller {
     } else {
       console.log(kategori);
       if (kategori.kategori === "makanan") {
-        StokWarmindo.find({ kategori: { $in: ["makanan", "toping"] } })
+        StokWarmindo.find({
+          kategori: { $in: ["makanan", "toping"] },
+          status: "aktif",
+        })
           .then((response) => {
             res.status(200).json({ data: response, total: response.length });
           })
           .catch(next);
       } else {
-        StokWarmindo.find({ kategori: kategori.kategori })
+        StokWarmindo.find({ kategori: kategori.kategori, status: "aktif" })
           .then((response) => {
             res.status(200).json({ data: response });
           })
